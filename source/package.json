@@ -1,0 +1,16 @@
+{
+  "name": "zhijian-hand-anatomy",
+  "version": "1.2.0",
+  "private": true,
+  "type": "module",
+  "description": "Offline Chinese hand anatomy explorer with educational examination diagrams",
+  "scripts": {
+    "build": "node build.mjs"
+  },
+  "dependencies": {
+    "three": "0.180.0"
+  },
+  "devDependencies": {
+    "esbuild": "0.25.10"
+  }
+}

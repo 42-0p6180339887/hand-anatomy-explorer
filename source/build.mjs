@@ -1,0 +1,10 @@
+import {build} from 'esbuild';
+import fs from 'node:fs';
+import {fileURLToPath} from 'node:url';
+const here=new URL('./',import.meta.url);
+const result=await build({entryPoints:[fileURLToPath(new URL('app.js',here))],bundle:true,minify:true,write:false});
+const js=result.outputFiles[0].text.replaceAll('</script','<\\/script');
+let html=fs.readFileSync(new URL('index.html',here),'utf8');
+html=html.replace('<link rel="stylesheet" href="style.css">',()=>`<style>${fs.readFileSync(new URL('style.css',here),'utf8')}</style>`).replace('<script src="app.js"></script>',()=>`<script>${js}</script>`);
+fs.writeFileSync(new URL('../docs/index.html',here),html);
+console.log('Built docs/index.html — ready for GitHub Pages or local preview.');

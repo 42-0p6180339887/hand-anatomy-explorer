@@ -1,0 +1,14 @@
+import fs from 'node:fs';
+import * as T from 'three';
+import {FBXLoader} from 'three/addons/loaders/FBXLoader.js';
+import {mergeVertices} from 'three/addons/utils/BufferGeometryUtils.js';
+globalThis.window={URL,innerWidth:1200,innerHeight:800};
+T.TextureLoader.prototype.load=function(){return new T.Texture()};
+const b=fs.readFileSync(new URL('./skeleton.fbx',import.meta.url));
+const root=new FBXLoader().parse(b.buffer.slice(b.byteOffset,b.byteOffset+b.byteLength),'');root.updateMatrixWorld(true);
+const out={};
+root.traverse(o=>{if(!o.isMesh||!/^(Scaphoid|Lunate|Triquetrum|Pisiform|Trapezium|Trapezoid|Capitate|Hamate)_boner$/.test(o.name))return;
+ let g=o.geometry.clone().applyMatrix4(o.matrixWorld);g.deleteAttribute('normal');g.deleteAttribute('uv');g=mergeVertices(g,.0001);g.computeBoundingBox();const box=g.boundingBox,c=box.getCenter(new T.Vector3()),sz=box.getSize(new T.Vector3()),p=g.attributes.position;
+ const arr=[];for(let i=0;i<p.count;i++)arr.push(+((p.getX(i)-c.x)/sz.x).toFixed(5),+(-(p.getY(i)-c.y)/sz.y).toFixed(5),+((p.getZ(i)-c.z)/sz.z).toFixed(5));
+ out[o.name]={p:arr,i:Array.from(g.index.array),source:o.name};console.log(o.name,sz.toArray());
+});fs.writeFileSync(new URL('./wrist-bones.json',import.meta.url),JSON.stringify(out));

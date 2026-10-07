@@ -1,0 +1,24 @@
+# Dependencies and local configuration
+node_modules/
+.env
+.env.*
+!.env.example
+.npmrc
+
+# Reproducible intermediate bundle; publish docs/index.html instead
+source/app.bundle.js
+*.map
+
+# Local work, diagnostics, archives, and editor files
+work/
+logs/
+tmp/
+temp/
+*.log
+*.tmp
+*.bak
+*.zip
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
