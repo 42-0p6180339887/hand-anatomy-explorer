@@ -41,3 +41,5 @@ GitHub Pages 沿用 `main:/docs`。修改后将 `source/` 与构建后的 `docs/
 骨网格来自 Z-Anatomy 分发的 `SkeletalSystem100.fbx`；本项目提取并调整了手部网格的方向、比例和位置。改编的解剖模型及教学图示依现有声明按 [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) 提供。上游署名包括 BodyParts3D / Kousaku OKUBO，以及 Z-Anatomy / Gauthier KERVYN、Marcin ZIELINSKI、Lluís VINENT。
 
 Three.js 使用 MIT 许可。完整上游许可与署名保存在本仓库及发布目录；详情见 [第三方声明](THIRD_PARTY_NOTICES.txt)、[上游署名](Z-Anatomy-ATTRIBUTION.txt)和[上游许可全文](Z-Anatomy-LICENSE.txt)。
+
+身体部位页现在直接显示手指、手掌或手腕三维结构，伤情记录位于图谱下方；空记录采用紧凑提示。完整图谱入口保留。

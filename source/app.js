@@ -7,6 +7,8 @@ import './exams.js';
 import {createWrist} from './wrist-model.js';
 import {wristInfo,routes} from './wrist-data.js';
 
+if(new URLSearchParams(location.search).get('embed')==='1'){document.body.dataset.embed='true';document.querySelector('.view-hint').innerHTML='拖动旋转<span>滚轮 / 双指缩放</span>'; }
+
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const state={labels:true,finger:2,hand:'right',mode:'whole',view:'palmar',angle:0,playing:false,exploded:false,selected:'a1',isolate:false,capsule:false,sheath:false,layers:{skin:false,bone:true,ligament:true,muscle:true,tendon:true,neuro:true}};
 const host=$('#canvasHost'), scene=new THREE.Scene(), root=new THREE.Group();scene.add(root);
@@ -143,7 +145,7 @@ function select(id,show=true){
 }
 function resetCamera(view=state.view){
  state.view=view;const group=fingers[state.finger];const sign=state.hand==='left'?-1:1;const target=state.mode==='focus'?new THREE.Vector3(group.position.x*sign,group.position.y+.6,state.exploded?1.1:0):new THREE.Vector3(-.6*sign,{whole:-2,palm:-3.5,wrist:-8.4}[state.mode],0);
- const aspect=host.clientWidth/host.clientHeight;const distance=state.mode==='whole'?Math.max(49,24/aspect):state.mode==='focus'?Math.max(20,10.4/aspect):Math.max(25,16/aspect);const offsets={palmar:[0,0,1],dorsal:[0,0,-1],side:[1,0,.07],oblique:[.6,.16,.85]};let off=v(offsets[view]).normalize().multiplyScalar(distance);if(view==='side')off.x*=sign;camera.position.copy(target).add(off);camera.up.set(0,1,0);controls.target.copy(target);controls.update();
+ const aspect=host.clientWidth/host.clientHeight;const distance=state.mode==='whole'?Math.max(49,24/aspect):state.mode==='focus'?Math.max(20,10.4/aspect):Math.max(25,16/aspect);const offsets={palmar:[0,0,1],dorsal:[0,0,-1],side:[1,0,.07],oblique:[.6,.16,.85]};let off=v(offsets[view]).normalize().multiplyScalar(distance*(document.body.dataset.embed==='true'&&state.mode==='focus'?1.65:1));if(view==='side')off.x*=sign;camera.position.copy(target).add(off);camera.up.set(0,1,0);controls.target.copy(target);controls.update();
  const txt={palmar:'掌面朝向你',dorsal:'手背朝向你',side:'侧面观察',oblique:'立体观察'};$('#direction').textContent=txt[view];$$('#views button').forEach(b=>{b.classList.toggle('active',b.dataset.view===view);b.setAttribute('aria-pressed',String(b.dataset.view===view));});
 }
 function bendPoint(x,y,z,rig,angle){if(rig==='fixed')return[x,y,z];let a=angle;if(rig==='soft')a*=THREE.MathUtils.smoothstep(y,-1.35,.7);let c=Math.cos(a),s=Math.sin(a);return[x,y*c-z*s,y*s+z*c];}
