@@ -3,3 +3,5 @@
 
 
 .card-head select{max-width:150px;font-size:13px;margin:0}.card-head h2{flex:1}.source-list a{overflow-wrap:anywhere}
+
+.eyebrow:empty{display:none}.simple-links{display:flex;gap:24px;flex-wrap:wrap;font-size:13px}.help-details{margin-top:20px}details.card summary{cursor:pointer;font-weight:600}details.card[open] summary{margin-bottom:20px}details.card[open] summary+h2{display:none}@media(max-width:760px){.sidebar nav a{flex:1;flex-direction:row;justify-content:center;gap:6px;font-size:13px}.sidebar nav{gap:6px}.simple-links{gap:16px}.page-head h1{font-size:28px}}

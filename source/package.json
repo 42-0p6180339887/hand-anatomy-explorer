@@ -1,9 +1,9 @@
 {
   "name": "zhijian-hand-anatomy",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "private": true,
   "type": "module",
-  "description": "Climber whole-body symptom and training journal with educational hand anatomy",
+  "description": "Climber whole-body symptom journal with educational hand anatomy",
   "scripts": {
     "build": "node build.mjs"
   },

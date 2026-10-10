@@ -17,10 +17,7 @@ export function assess(e,now=today()){
  if(c&&(c.trend==='worse'||c.function==='limited'))return {level:1,title:'先减少刺激，安排评估',reasons:[c.trend==='worse'?'比上次更痛或更不舒服':'日常功能受到影响'],action:'不增加刺激伤处的负荷。症状持续、反复或功能下降时，联系运动医学 / 康复专业人员。',refs:['sprain','assh']};
  return {level:0,title:'继续观察，不代表已恢复',reasons:[c?`最近记录：${c.date}${dayDiff(now,c.date)>2?'（需要更新）':''}`:'尚无复查'],action:'记录症状和日常功能变化；疼痛持续、反复或自己担心时就医。没有触发提醒也不能排除损伤。',refs:[reference]};
 }
-export function weekly(sessions,now=today()){
- return Array.from({length:4},(_,i)=>{const min=(3-i)*7,max=min+6;const rows=sessions.filter(s=>{const n=dayDiff(now,s.date);return n>=min&&n<=max});return {label:i===3?'近 7 天':`${min+1}–${max+1} 天前`,count:rows.length,load:rows.reduce((n,s)=>n+s.minutes*s.rpe,0),minutes:rows.reduce((n,s)=>n+s.minutes,0)};});
-}
-export function due(s,now=today()){return s.review===null&&dayDiff(now,s.date)>=1;}
+// Keep validating legacy sessions only so existing local records and backups remain lossless.
 const str=(v,max=2000)=>typeof v==='string'&&v.length<=max;
 const num=(v,min,max)=>Number.isFinite(v)&&v>=min&&v<=max;
 export function validDate(v){return str(v,10)&&/^\d{4}-\d{2}-\d{2}$/.test(v)&&!isNaN(Date.parse(v+'T12:00:00Z'))&&new Date(v+'T12:00:00Z').toISOString().slice(0,10)===v&&v<=today();}

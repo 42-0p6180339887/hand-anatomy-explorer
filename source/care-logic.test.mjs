@@ -1,14 +1,12 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
-import {assess,weekly,due,latest,validateData,emptyData,dayDiff,validDate} from './care-logic.js';
+import {assess,latest,validateData,emptyData,dayDiff,validDate} from './care-logic.js';
 const check=(changes={})=>({date:'2026-10-01',at:1,rest:0,during:0,function:'normal',trend:'same',flags:[],note:'',...changes});
 const ep=(changes={})=>({id:'a',region:'finger',side:'right',age:'adult',date:'2026-10-01',detail:'',trigger:'',notes:'',plan:'',closed:false,checks:[check()],...changes});
 test('all emergency indicators outrank other symptoms and pain zero',()=>{for(const flag of ['deform','vascular','neuro','spine','highfall'])assert.equal(assess(ep({checks:[check({flags:[flag]})]})).level,3);});
 test('urgent and pediatric finger rules apply despite low pain',()=>{for(const flag of ['headsym','loss','pop','swelling','fever'])assert.equal(assess(ep({checks:[check({flags:[flag]})]})).level,2);assert.equal(assess(ep({age:'under18'})).level,2);assert.equal(assess(ep({age:'under18',region:'knee'})).level,0);});
 test('pain threshold and deteriorating function trigger review, no green clearance',()=>{assert.equal(assess(ep({checks:[check({during:7})]})).level,2);assert.equal(assess(ep({checks:[check({trend:'worse'})]})).level,1);assert.equal(assess(ep({checks:[check({function:'limited'})]})).level,1);assert.match(assess(ep()).title,/不代表已恢复/);});
 test('backdated check does not supersede latest check, same date ordered by timestamp',()=>{const e=ep({checks:[check({date:'2026-10-02',flags:['loss']}),check({at:9}),check({date:'2026-10-02',at:2,flags:['deform']})]});assert.deepEqual(latest(e).flags,['deform']);});
-test('rolling weeks are disjoint and exclude future sessions, missing remains count zero',()=>{const ss=['2026-10-10','2026-10-04','2026-10-03','2026-10-11'].map(date=>({date,minutes:10,rpe:5}));const w=weekly(ss,'2026-10-10');assert.deepEqual(w.map(x=>x.count),[0,0,1,2]);assert.equal(w.at(-1).load,100);assert.equal(dayDiff('2026-03-09','2026-03-08'),1);});
-test('follow-up due only next day or later and absent',()=>{assert.equal(due({date:'2026-10-10',review:null},'2026-10-10'),false);assert.equal(due({date:'2026-10-09',review:null},'2026-10-10'),true);assert.equal(due({date:'2026-10-09',review:{}},'2026-10-10'),false);});
 test('backups validate ranges, relationships, duplicate ids and real dates',()=>{const d=emptyData();d.episodes.push(ep());assert.equal(validateData(d),d);for(const change of [{region:'bogus'},{checks:[check({during:11})]},{checks:[check({flags:['unknown']})]},{date:'2026-02-30'}])assert.throws(()=>validateData({...d,episodes:[ep(change)]}));assert.throws(()=>validateData({...d,episodes:[ep(),ep()]}));assert.equal(validDate('2026-02-30'),false);assert.equal(validDate('2099-01-01'),false);});
 
 test('backup rejects markup identifiers and prototype keys before rendering',()=>{for(const change of [{id:'"><img src=x onerror=alert(1)>'},{region:'__proto__'},{checks:[check({flags:['constructor']})]}])assert.throws(()=>validateData({schema:2,episodes:[ep(change)],sessions:[]}));});
