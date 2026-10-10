@@ -205,3 +205,5 @@ select('tfcc');resize();
 let clock=0,prev=performance.now();function frame(now){requestAnimationFrame(frame);const delta=Math.min(.1,(now-prev)/1000);prev=now;if(state.playing){clock+=delta;state.angle=(1-Math.cos(clock*1.05))*32.5;$('#angle').value=state.angle;$('#angleValue').textContent=Math.round(state.angle)+'°';}deform();controls.update();root.updateMatrixWorld(true);labelPositions();renderer.render(scene,camera);}requestAnimationFrame(frame);
 // Exposed only for deterministic local acceptance and linking educational exam diagrams.
 window.handAtlas={state,select,resetCamera,updateVisibility,resetLayers,scene,renderer,camera,all,fingers,root,notice};
+
+const careRegion=new URLSearchParams(location.search).get('region');if(careRegion==='finger'){state.mode='focus';select('a2');resetCamera('palmar');updateVisibility();}else if(careRegion==='palm'){useRoute('palm');}else if(careRegion==='wrist'){useRoute('ulnar');}

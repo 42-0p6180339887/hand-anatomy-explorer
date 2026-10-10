@@ -1,37 +1,38 @@
-# 指间 · 手部解剖探索
+# 指间 · 攀岩身体日志 v2.0
 
-面向攀岩与健身学习者的中文交互式手部解剖图谱。可观察手指、手掌和腕部，切换组织图层、选择结构、查看动作相关位置，以及阅读 10 项检查动作的教学示意。
+面向抱石、运动攀岩和其他攀爬训练的全身症状、训练与恢复记录工具。
 
-**在线地址（部署后生效）：** <https://42-0p6180339887.github.io/hand-anatomy-explorer/>
+**在线使用：** <https://42-0p6180339887.github.io/hand-anatomy-explorer/>
 
-## 使用与边界
+## 可以做什么
 
-打开在线地址，或下载 `docs/index.html` 后直接用现代浏览器打开。页面已包含模型数据、样式和运行代码；初次打开需要浏览器支持 WebGL。
+- 全身定位：手指、手腕、手掌、肩、肘、腰背、髋、大腿、膝、踝、足、头颈及其他部位；记录侧别、精细位置与发生机制。
+- 多处伤情独立建档：追踪疼痛、日常功能、症状变化和专业人员给出的计划；支持归档和重新追踪。
+- 攀岩训练日志：类型、地形、抓点手型、难度、高强度尝试、时长、主观强度、指力板细节及关联伤情。
+- 次日 / 后续反馈与四周训练回顾；急性警示、青少年手指痛、症状恶化等提供有原因的就医提醒。
+- 导出就医摘要、JSON 备份 / 恢复；虚构示例与真实数据分开。
+- 旧版 48 项手部结构和 10 项检查教学内容保留在 [三维图谱](https://42-0p6180339887.github.io/hand-anatomy-explorer/anatomy.html)。
 
-这是通用解剖教学示意，不是个人医学影像，也不用于诊断损伤。组织比例、精细几何与检查动画均有简化；动画不代表实测位移、组织受力或经过临床验证的模拟。检查内容用于理解医生的检查，不应用于自行反复施压或寻找阳性反应。具体模型边界和文献对应见 [SOURCES.md](SOURCES.md)。
+## 使用边界与隐私
 
-## 目录
+**记录与就医沟通工具，不提供诊断、受伤概率、康复处方或复攀许可。** 提醒规则未经过临床验证；没有触发提醒不代表没有风险。具体规则、阅读范围与资料对应见 [CARE-EVIDENCE.md](CARE-EVIDENCE.md)。
 
-- `docs/`：可直接发布的完整网页，以及来源和许可文件。
-- `source/`：模型数据、界面与检查动画源码、构建脚本。
-- `SOURCES.md`：解剖与检查动作来源、建模方式及边界。
-- `THIRD_PARTY_NOTICES.txt`、`Z-Anatomy-ATTRIBUTION.txt`、`Z-Anatomy-LICENSE.txt`：第三方许可与署名。
+健康记录保存在当前浏览器本地，不上传、不跨设备同步；本地存储未加密。请定期导出备份，清理浏览器数据或隐私模式结束可能丢失记录。没有后台通知，提醒仅在打开应用时显示。多人共用浏览器不适合保存私人健康记录。
 
-## 本地构建
-
-安装 Node.js 和 npm 后，在仓库根目录运行：
+## 构建与验证
 
 ```sh
 cd source
 npm install
+node --test care-logic.test.mjs
 npm run build
 ```
 
-构建会更新 `docs/index.html`。发布目录已包含可用成品，因此访问网站无需在浏览器中安装任何依赖。`bones.json` 与 `wrist-bones.json` 已包含所需骨网格；`extract-bones.mjs` 和 `extract-wrist.mjs` 是重新提取上游 FBX 的辅助脚本，常规构建不需要 FBX 文件。
+构建生成两份自包含网页：`docs/index.html` 为身体日志，`docs/anatomy.html` 为三维解剖。两者与资料文件保存在同一目录，适用于 GitHub Pages；也可整包下载后在现代浏览器中打开，文件方式存储行为依浏览器而异。身体日志无需 WebGL，三维图谱需要支持 WebGL 的浏览器。
 
-## GitHub Pages 发布
+GitHub Pages 沿用 `main:/docs`。修改后将 `source/` 与构建后的 `docs/` 一同提交。`docs/CARE-EVIDENCE.md` 与根目录证据表保持相同。
 
-在仓库 **Settings → Pages → Build and deployment** 中选择 **Deploy from a branch**，分支为 **main**，目录为 **/docs**，保存后等待部署完成。后续更新源码时先重新构建，再将源码和更新后的 `docs/index.html` 一同提交至 `main`。
+本次功能与浏览器验证见 [ACCEPTANCE-v2.md](ACCEPTANCE-v2.md)。解剖来源保留在 [SOURCES.md](SOURCES.md)。
 
 ## 来源与许可
 

@@ -6,5 +6,9 @@ const result=await build({entryPoints:[fileURLToPath(new URL('app.js',here))],bu
 const js=result.outputFiles[0].text.replaceAll('</script','<\\/script');
 let html=fs.readFileSync(new URL('index.html',here),'utf8');
 html=html.replace('<link rel="stylesheet" href="style.css">',()=>`<style>${fs.readFileSync(new URL('style.css',here),'utf8')}</style>`).replace('<script src="app.js"></script>',()=>`<script>${js}</script>`);
-fs.writeFileSync(new URL('../docs/index.html',here),html);
-console.log('Built docs/index.html — ready for GitHub Pages or local preview.');
+fs.writeFileSync(new URL('../docs/anatomy.html',here),html);
+const care=await build({entryPoints:[fileURLToPath(new URL('care.js',here))],bundle:true,minify:true,write:false});
+const careJS=care.outputFiles[0].text.replaceAll('</script','<\\/script');
+const portal=fs.readFileSync(new URL('care.html',here),'utf8').replace('<link rel="stylesheet" href="care.css">',()=>`<style>${fs.readFileSync(new URL('care.css',here),'utf8')}</style>`).replace('<script src="care.js"></script>',()=>`<script>${careJS}</script>`);
+fs.writeFileSync(new URL('../docs/index.html',here),portal);
+console.log('Built climber care portal and preserved anatomy atlas.');

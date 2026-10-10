@@ -1,9 +1,9 @@
 {
   "name": "zhijian-hand-anatomy",
-  "version": "1.2.0",
+  "version": "2.0.0",
   "private": true,
   "type": "module",
-  "description": "Offline Chinese hand anatomy explorer with educational examination diagrams",
+  "description": "Climber whole-body symptom and training journal with educational hand anatomy",
   "scripts": {
     "build": "node build.mjs"
   },
